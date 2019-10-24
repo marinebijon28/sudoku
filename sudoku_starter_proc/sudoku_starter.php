@@ -177,6 +177,7 @@ function display(array $grid): string {
     {
         foreach ($value as $valeur) {
             $line .= $valeur;
+            $line .= ' ';
         }
         $line .= "\n";
         
@@ -192,7 +193,25 @@ function display(array $grid): string {
  * @return bool Résultat du test
  */
 function isValueValidForPosition(array $grid, int $rowIndex, int $columnIndex, int $value): bool {
-    //
+    $bool=false;
+    $colonne=column($grid,$columnIndex);
+    $ligne=row($grid,$rowIndex);
+
+    $squareIndex=0;
+    if (floor($rowIndex)==1) {
+        $squareIndex=$squareIndex+3 + floor($columnIndex/3);
+    }
+    if (floor($rowIndex)==2) {
+        $squareIndex=$squareIndex+6 + floor($columnIndex/3);
+    }
+    $cube=square($grid,$squareIndex);
+
+    if ($grid[$rowIndex][$columnIndex]==0) {
+        if (!in_array($value, $colonne)&& !in_array($value, $ligne)&& !in_array($value, $cube)) {
+            $bool=true;
+        }
+    }
+    return $bool;
 }
 
 /**
