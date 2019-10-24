@@ -7,8 +7,8 @@
  */
 function loadFromFile(string $filepath): ?array {
     //
-    $file = file_get_contents($filepath);
-    $tab = json_decode($file);
+    if (($file = file_get_contents($filepath)) === true)
+        $tab = json_decode($file);
     // $file = file($filepath);
     // if (empty($file))
     // {
@@ -49,9 +49,9 @@ function get(array $grid, int $rowIndex, int $columnIndex): int {
  * @param int $columnIndex Index de colonne
  * @param int $value Valeur
  */
-function set(array $grid, int $rowIndex, int $columnIndex, int $value): void {
+function set(array &$grid, int $rowIndex, int $columnIndex, int $value): void {
     
-        $grid[$rowIndex][$columnIndex] = $value;
+      $grid[$rowIndex][$columnIndex] = $value;
 
 }
 
@@ -135,6 +135,7 @@ function isValid(array $grid): bool {
 
 function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
     //
+   
         // while( $rowIndex < 9 )
         // {
             //  $line[] = $grid[$rowIndex];
@@ -143,10 +144,12 @@ function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
             //   //  print($grid[$columnIndex]);
             //     // if ($line[$rowIndex][$columnIndex] != ' ')
             //     // {
-                    if($grid[$rowIndex][$columnIndex] == 0)
-                    {
-                        set($grid, $rowIndex, 0, 1);
-                    }
+                    // if(get($tab, $rowIndex, $columnIndex) == 0)
+                    // {
+                        print_r(get($grid,1,1));
+                        set($grid,1, 1, 4);
+                        print_r(get($grid,1,1));
+                    // }
             //         solve($grid, $rowIndex, ++$columnIndex);
             //     // }
             // }
