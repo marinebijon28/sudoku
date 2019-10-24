@@ -74,9 +74,9 @@ function row(array $grid, int $rowIndex, int $columnIndex): array {
  */
 function column(array $grid, int $columnIndex): array {
         
-        for (*$i=0;$i<=8;$i++)
+        for ($j=0;$j<=8;$j++)
             $ligne[$i] = get($grid,$rowIndex,$columnIndex)
-        return $ligne[$i]
+        return $ligne[$j]
 }
 
 /**
