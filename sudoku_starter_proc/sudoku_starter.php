@@ -39,7 +39,8 @@ function loadFromFile(string $filepath): ?array {
  * @return int Valeur
  */
 function get(array $grid, int $rowIndex, int $columnIndex): int {
-    //
+    
+    return $grid[$rowIndex][$columnIndex];
 }
 
 /**
@@ -49,11 +50,9 @@ function get(array $grid, int $rowIndex, int $columnIndex): int {
  * @param int $value Valeur
  */
 function set(array $grid, int $rowIndex, int $columnIndex, int $value): void {
-    //
-    if (!empty($grid[$rowIndex][$columnIndex]))
-    {
+    
         $grid[$rowIndex][$columnIndex] = $value;
-    }
+
 }
 
 /**
@@ -62,7 +61,9 @@ function set(array $grid, int $rowIndex, int $columnIndex, int $value): void {
  * @return array Chiffres de la ligne demandée
  */
 function row(array $grid, int $rowIndex): array {
-    //
+    
+    array_column($columnIndex);
+    print_r('hello');
 }
 
 /**
