@@ -40,7 +40,7 @@ function loadFromFile(string $filepath): ?array {
  * @param int $columnIndex Index de colonne
  * @return int Valeur
  */
-function get(array $grid, int $rowIndex, int $columnIndex): int {
+function get(array &$grid, int $rowIndex, int $columnIndex): int {
     
     return $grid[$rowIndex][$columnIndex];
 }
@@ -62,11 +62,11 @@ function set(array &$grid, int $rowIndex, int $columnIndex, int $value): void {
  * @param int $rowIndex Index de ligne (entre 0 et 8)
  * @return array Chiffres de la ligne demandée
  */
-function row(array $grid, int $rowIndex): array {
+function row(array $grid, int $rowIndex, int $columnIndex): array {
     
    for ($i=0; $i <= 8 ; $i++) 
-       $ligne[i]=get($grid,$rowIndex,$columnIndex);
-    return $ligne[$i]
+       $ligne[$i]=get($grid,$rowIndex,$columnIndex);
+    return $ligne[$i];
    
 }
 
@@ -75,11 +75,11 @@ function row(array $grid, int $rowIndex): array {
  * @param int $columnIndex Index de colonne (entre 0 et 8)
  * @return array Chiffres de la colonne demandée
  */
-function column(array $grid, int $columnIndex): array {
+function column(array $grid, int $rowIndex, int $columnIndex): array {
     
     for ($j=0; $j <= 8 ; $j++) 
-       $ligne[i]=get($grid,$rowIndex,$columnIndex);
-    return $ligne[$j]
+       $ligne[$i]=get($grid,$rowIndex,$columnIndex);
+    return $ligne[$j];
 }
 
 /**
@@ -94,7 +94,7 @@ function square(array $grid, int $squareIndex): array {
         case 1 : 
             for ($j=0; $j <  3; $j++) { 
                 for ($i=0; $i < 3; $i++) { 
-                    $tab[] = $grid[$i][$j]
+                    $tab[] = $grid[$i][$j];
             }
             $i = 0;   
         }
@@ -102,21 +102,21 @@ function square(array $grid, int $squareIndex): array {
             case 2 :
                 for ($j=0; $j <  3; $j++) { 
                     for ($i=0; $i < 6 && $i > 3; $i++) { 
-                        $tab[] = $grid[$i][$j]
+                        $tab[] = $grid[$i][$j];
             }
             $i = 0;
         }
             case 3 :
                 for ($j=0; $j < 3 ; $j++) { 
                     for ($i=0; $i <  9  && $i > 6; $i++) { 
-                        $tab[] = $grid[$i][$j]       
+                        $tab[] = $grid[$i][$j];       
             }
             $i = 0;
         }
             case 4 :
                 for ($j=0; $j < 6 && $j > 3 ; $j++) { 
                     for ($i=0; $i < 3 ; $i++) { 
-                        $tab[] = $grid[$i][$j]
+                        $tab[] = $grid[$i][$j];
             }
             $i = 0;
         }
@@ -124,7 +124,7 @@ function square(array $grid, int $squareIndex): array {
             case 5 :
                 for ($j=0; $j < 6 && $j > 3; $j++) { 
                     for ($i=0; $i < 3 && $i > 6 ; $i++) { 
-                        $tab[] = $grid[$i][$j]       
+                        $tab[] = $grid[$i][$j];       
             }
             $i = 0;
         }
@@ -132,7 +132,7 @@ function square(array $grid, int $squareIndex): array {
             case 6 :
                 for ($j=0; $j < 6 &&  $j >3 ; $j++) { 
                     for ($i=0; $i < 9 && $i > 6; $i++) { 
-                        $tab[] = $grid[$i][$j]   
+                        $tab[] = $grid[$i][$j];   
             }
             $i = 0;
         }
@@ -140,7 +140,7 @@ function square(array $grid, int $squareIndex): array {
             case 7 :
                 for ($j=0; $j < 9 && $j > 6 ; $j++) { 
                     for ($i=0; $i < 3; $i++) { 
-                        $tab[] = $grid[$i][$j]       
+                        $tab[] = $grid[$i][$j];       
             }
             $i = 0;
         }
@@ -148,7 +148,7 @@ function square(array $grid, int $squareIndex): array {
             case 8 :
                 for ($j=0; $j < 9 && $j > 6 ; $j++) { 
                     for ($i=0; $i < 6 &&  $i > 3 ; $i++) { 
-                        $tab[] = $grid[$i][$j]       
+                        $tab[] = $grid[$i][$j];       
             }
             $i = 0;
         }
@@ -156,13 +156,15 @@ function square(array $grid, int $squareIndex): array {
             case 9 :
                 for ($j=0; $j < 9 && $j > 6 ; $j++) { 
                     for ($i=0; $i < 9 &&  $i > 6  ; $i++) { 
-                        $tab[] = $grid[$i][$j]       
+                        $tab[] = $grid[$i][$j];       
             }
             $i = 0;
         }
+    }
         // default:
-    return $grid
+    return $grid;
 }
+
 
 /**
  * Génère l'affichage de la grille
@@ -231,12 +233,12 @@ function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
             //   //  print($grid[$columnIndex]);
             //     // if ($line[$rowIndex][$columnIndex] != ' ')
             //     // {
-                    // if(get($tab, $rowIndex, $columnIndex) == 0)
-                    // {
+                    if(get($grid, $rowIndex, $columnIndex) == 0)
+                    {
                         print_r(get($grid,1,1));
                         set($grid,1, 1, 4);
                         print_r(get($grid,1,1));
-                    // }
+                    }
             //         solve($grid, $rowIndex, ++$columnIndex);
             //     // }
             // }
@@ -250,7 +252,7 @@ function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
 
 $dir = __DIR__ . '/grids';
 $files = array_values(array_filter(scandir($dir), function($f){ return $f != '.' && $f != '..'; }));
-
+    
 foreach($files as $file){
     $filepath = realpath($dir . '/' . $file);
     echo("Chargement du fichier $file" . PHP_EOL);
@@ -261,6 +263,7 @@ foreach($files as $file){
     echo("Début de la recherche de solution" . PHP_EOL);
     if ($grid != NULL)
         $solvedGrid = solve($grid , 0, 0);
+echo display($solvedGrid);
     // if($solvedGrid === null){
     //     echo("Echec, grille insolvable" . PHP_EOL);
     // } else {
