@@ -7,27 +7,29 @@
  */
 function loadFromFile(string $filepath): ?array {
     //
-    $file = file($filepath);
-    if (empty($file))
-    {
-        print("fichier vide\n");
-        return NULL;
-    } 
-    else 
-    {
-        $tab = [];
-        foreach ($file as $key => $value)
-        {
-            if ($key != 0 && $key != 10)
-            {
-                $line = str_replace("[", "", $value);
-                $line = str_replace("]", "", $line);
-                $line = str_replace(",", "", $line);
-                $tab[] = $line;
-            }
-        }
-        return ($tab);
-    }
+    $file = file_get_contents($filepath);
+    $tab = json_decode($file);
+    // $file = file($filepath);
+    // if (empty($file))
+    // {
+    //     print("fichier vide\n");
+    //     return NULL;
+    // } 
+    // else 
+    // {
+    //     $tab = [];
+    //     foreach ($file as $key => $value)
+    //     {
+    //         if ($key != 0 && $key != 10)
+    //         {
+    //             $line = str_replace("[", "", $value);
+    //             $line = str_replace("]", "", $line);
+    //             $line = str_replace(",", "", $line);
+    //             $tab[] = $line;
+    //         }
+    //     }
+         return ($tab);
+    //}
 }
 
 /**
@@ -48,6 +50,10 @@ function get(array $grid, int $rowIndex, int $columnIndex): int {
  */
 function set(array $grid, int $rowIndex, int $columnIndex, int $value): void {
     //
+    if (!empty($grid[$rowIndex][$columnIndex]))
+    {
+        $grid[$rowIndex][$columnIndex] = $value;
+    }
 }
 
 /**
@@ -87,7 +93,11 @@ function display(array $grid): string {
     $line = NULL;
     foreach ($grid as $value) 
     {
-        $line .= $value;
+        foreach ($value as $valeur) {
+            $line .= $valeur;
+        }
+        $line .= "\n";
+        
     }
     return ($line);
 }
@@ -124,6 +134,27 @@ function isValid(array $grid): bool {
 
 function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
     //
+        // while( $rowIndex < 9 )
+        // {
+            //  $line[] = $grid[$rowIndex];
+            // if ($columnIndex < count($line))
+            // {
+            //   //  print($grid[$columnIndex]);
+            //     // if ($line[$rowIndex][$columnIndex] != ' ')
+            //     // {
+                    if($grid[$rowIndex][$columnIndex] == 0)
+                    {
+                        set($grid, $rowIndex, 0, 1);
+                    }
+            //         solve($grid, $rowIndex, ++$columnIndex);
+            //     // }
+            // }
+            //print_r($tab);  
+        //     $rowIndex++;
+        //     $columnIndex = 0;
+        //     solve($grid, $rowIndex, $columnIndex);    
+        // }
+        return $grid;
 }
 
 $dir = __DIR__ . '/grids';
@@ -135,9 +166,10 @@ foreach($files as $file){
     $grid = loadFromFile($filepath);
     if ($grid != NULL)
         echo(display($grid) . PHP_EOL);
-    // $startTime = microtime(true);
-    // echo("Début de la recherche de solution" . PHP_EOL);
-    // $solvedGrid = solve($grid);
+    $startTime = microtime(true);
+    echo("Début de la recherche de solution" . PHP_EOL);
+    if ($grid != NULL)
+        $solvedGrid = solve($grid , 0, 0);
     // if($solvedGrid === null){
     //     echo("Echec, grille insolvable" . PHP_EOL);
     // } else {
