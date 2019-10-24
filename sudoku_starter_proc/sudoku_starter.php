@@ -60,10 +60,11 @@ function set(array &$grid, int $rowIndex, int $columnIndex, int $value): void {
  * @param int $rowIndex Index de ligne (entre 0 et 8)
  * @return array Chiffres de la ligne demandée
  */
-function row(array $grid, int $rowIndex): array {
+function row(array $grid, int $rowIndex, int $columnIndex): array {
     
-    array_column($columnIndex);
-    print_r('hello');
+    for (*$i=0;$i<=8;$i++)
+            $ligne[$i] = get($grid,$rowIndex,$columnIndex)
+        return $ligne[$i]
 }
 
 /**
@@ -72,7 +73,10 @@ function row(array $grid, int $rowIndex): array {
  * @return array Chiffres de la colonne demandée
  */
 function column(array $grid, int $columnIndex): array {
-    //
+        
+        for ($j=0;$j<=8;$j++)
+            $ligne[$i] = get($grid,$rowIndex,$columnIndex)
+        return $ligne[$j]
 }
 
 /**
