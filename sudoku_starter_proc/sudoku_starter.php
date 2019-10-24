@@ -64,8 +64,10 @@ function set(array &$grid, int $rowIndex, int $columnIndex, int $value): void {
  */
 function row(array $grid, int $rowIndex): array {
     
-    array_column($columnIndex);
-    print_r('hello');
+   for ($i=0; $i <= 8 ; $i++) 
+       $ligne[i]=get($grid,$rowIndex,$columnIndex);
+    return $ligne[$i]
+   
 }
 
 /**
@@ -74,7 +76,10 @@ function row(array $grid, int $rowIndex): array {
  * @return array Chiffres de la colonne demandée
  */
 function column(array $grid, int $columnIndex): array {
-    //
+    
+    for ($j=0; $j <= 8 ; $j++) 
+       $ligne[i]=get($grid,$rowIndex,$columnIndex);
+    return $ligne[$j]
 }
 
 /**
@@ -84,7 +89,79 @@ function column(array $grid, int $columnIndex): array {
  * @return array Chiffres du bloc demandé
  */
 function square(array $grid, int $squareIndex): array {
-    //
+
+    switch ($squareIndex) {
+        case 1 : 
+            for ($j=0; $j <  3; $j++) { 
+                for ($i=0; $i < 3; $i++) { 
+                    $tab[] = $grid[$i][$j]
+            }
+            $i = 0;   
+        }
+            break;
+            case 2 :
+                for ($j=0; $j <  3; $j++) { 
+                    for ($i=0; $i < 6 && $i > 3; $i++) { 
+                        $tab[] = $grid[$i][$j]
+            }
+            $i = 0;
+        }
+            case 3 :
+                for ($j=0; $j < 3 ; $j++) { 
+                    for ($i=0; $i <  9  && $i > 6; $i++) { 
+                        $tab[] = $grid[$i][$j]       
+            }
+            $i = 0;
+        }
+            case 4 :
+                for ($j=0; $j < 6 && $j > 3 ; $j++) { 
+                    for ($i=0; $i < 3 ; $i++) { 
+                        $tab[] = $grid[$i][$j]
+            }
+            $i = 0;
+        }
+                        break;
+            case 5 :
+                for ($j=0; $j < 6 && $j > 3; $j++) { 
+                    for ($i=0; $i < 3 && $i > 6 ; $i++) { 
+                        $tab[] = $grid[$i][$j]       
+            }
+            $i = 0;
+        }
+            break;
+            case 6 :
+                for ($j=0; $j < 6 &&  $j >3 ; $j++) { 
+                    for ($i=0; $i < 9 && $i > 6; $i++) { 
+                        $tab[] = $grid[$i][$j]   
+            }
+            $i = 0;
+        }
+            break;
+            case 7 :
+                for ($j=0; $j < 9 && $j > 6 ; $j++) { 
+                    for ($i=0; $i < 3; $i++) { 
+                        $tab[] = $grid[$i][$j]       
+            }
+            $i = 0;
+        }
+            break;
+            case 8 :
+                for ($j=0; $j < 9 && $j > 6 ; $j++) { 
+                    for ($i=0; $i < 6 &&  $i > 3 ; $i++) { 
+                        $tab[] = $grid[$i][$j]       
+            }
+            $i = 0;
+        }
+            break;
+            case 9 :
+                for ($j=0; $j < 9 && $j > 6 ; $j++) { 
+                    for ($i=0; $i < 9 &&  $i > 6  ; $i++) { 
+                        $tab[] = $grid[$i][$j]       
+            }
+            $i = 0;
+        }
+        // default:
+    return $grid
 }
 
 /**
@@ -124,7 +201,15 @@ function isValueValidForPosition(array $grid, int $rowIndex, int $columnIndex, i
  * @return array Coordonnées suivantes au format [indexLigne, indexColonne]
  */
 function getNextRowColumn(array $grid, int $rowIndex, int $columnIndex): array {
-    //
+    
+    if ($columnIndex == 8) {
+        $columnIndex = 0;
+        $rowIndex +=1;
+    }
+    else{
+        $rowIndex += 1;
+    }
+    return $nextPosition=[$rowIndex,$columnIndex];
 }
 
 /**
