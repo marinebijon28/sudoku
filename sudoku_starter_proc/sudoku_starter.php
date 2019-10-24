@@ -177,7 +177,6 @@ function display(array $grid): string {
     {
         foreach ($value as $valeur) {
             $line .= $valeur;
-            $line .= ' ';
         }
         $line .= "\n";
         
@@ -237,42 +236,88 @@ function getNextRowColumn(array $grid, int $rowIndex, int $columnIndex): array {
  * Teste si la grille est valide
  * @return bool
  */
-function isValid(array $grid): bool {
+function isValid(array $grid, $rowIndex, $columnIndex): bool {
     //
+    $c = $grid[$rowIndex][$columnIndex];
+    $xIndex = $rowIndex;
+    $yIndex = $columnIndex;
+    $rowIndex = 0;
+    while ($rowIndex < 9)
+    {
+        if ($rowIndex != $xIndex)
+            if ($grid[$rowIndex][$columnIndex] == $c)
+                return (false);
+        $rowIndex++;
+    }
+    $columnIndex = 0;
+    while ($columnIndex < 9)
+    {
+        if ($columnIndex != $yIndex)
+            if ($grid[$xIndex][$columnIndex] == $c)
+                return (false);
+        $columnIndex++;
+    }
+   $posY = floor($yIndex / 3) * 3;
+    for ($i = 0; $i < 3; $i++)
+    {
+        $posX = floor($xIndex / 3) * 3;
+        for($j = 0; $j < 3; $j++)
+        {
+            if ($grid[$posX][$posY] == $c && $posX != $xIndex && $posY != $yIndex)
+                return false;
+            $posX++;
+        }
+        $posY++;
+    }
+    return (true);
 }
 
-function solve(array $grid, int $rowIndex, int $columnIndex): ?array {
+function solve(array &$grid, int $rowIndex, int $columnIndex): ?bool {
     //
-   
-        // while( $rowIndex < 9 )
-        // {
-            //  $line[] = $grid[$rowIndex];
-            // if ($columnIndex < count($line))
-            // {
-            //   //  print($grid[$columnIndex]);
-            //     // if ($line[$rowIndex][$columnIndex] != ' ')
-            //     // {
-                    if(get($grid, $rowIndex, $columnIndex) == 0)
-                    {
-                        print_r(get($grid,1,1));
-                        set($grid,1, 1, 4);
-                        print_r(get($grid,1,1));
-                    }
-            //         solve($grid, $rowIndex, ++$columnIndex);
-            //     // }
-            // }
-            //print_r($tab);  
-        //     $rowIndex++;
-        //     $columnIndex = 0;
-        //     solve($grid, $rowIndex, $columnIndex);    
-        // }
-        return $grid;
+   //      if ($columnIndex < 9)
+   //      {
+   //          //  $line[] = $grid[$rowIndex];
+   //          if ($rowIndex < 9)
+   //          {
+   //              print(get($grid, $rowIndex, $columnIndex) . "\n");
+   // print($rowIndex . "\t" . $columnIndex);
+   //                  if(get($grid, $rowIndex, $columnIndex) == 0)
+   //                  {
+   //                      set($grid,$rowIndex, $columnIndex, 4);
+   //                  }
+   //                  solve($grid, ++$rowIndex, $columnIndex);
+   //          }
+   //          // }
+   //          //print_r($tab);  
+   //      //     $rowIndex++;
+   //          $rowIndex = 0;
+   //          solve($grid, $rowIndex, ++$columnIndex);    
+   //      }
+   //      return $grid;
+    if ($columnIndex > 8) {
+        ++$rowIndex;
+        $columnIndex = 0;
+    }
+    if ($rowIndex > 8)
+        return true;
+    if ($grid[$rowIndex][$columnIndex] != 0)
+        return solve($grid, $rowIndex, $columnIndex + 1);
+    while (++$grid[$rowIndex][$columnIndex] < 10) {
+        if (isValid($grid, $rowIndex, $columnIndex)) {
+            if (solve($grid, $rowIndex, $columnIndex + 1)) {
+                return true;
+            }
+        }
+    }
+   $grid[$rowIndex][$columnIndex] = 0;
+    return false;
 }
 
 $dir = __DIR__ . '/grids';
 $files = array_values(array_filter(scandir($dir), function($f){ return $f != '.' && $f != '..'; }));
-    
+   
 foreach($files as $file){
+
     $filepath = realpath($dir . '/' . $file);
     echo("Chargement du fichier $file" . PHP_EOL);
     $grid = loadFromFile($filepath);
@@ -281,16 +326,15 @@ foreach($files as $file){
     $startTime = microtime(true);
     echo("Début de la recherche de solution" . PHP_EOL);
     if ($grid != NULL)
-        $solvedGrid = solve($grid , 0, 0);
-echo display($solvedGrid);
-    // if($solvedGrid === null){
-    //     echo("Echec, grille insolvable" . PHP_EOL);
-    // } else {
-    //     echo("Reussite :" . PHP_EOL);
-    //     echo(display($solvedGrid) . PHP_EOL);
-    // }
+        $bool = solve($grid , 0, 0);
+    if($bool === false){
+        echo("Echec, grille insolvable" . PHP_EOL);
+    } else {
+        echo("Reussite :" . PHP_EOL);
+        echo(display($grid) . PHP_EOL);
+    }
 
-    // $duration = round((microtime(true) - $startTime) * 1000);
-    // echo("Durée totale : $duration ms" . PHP_EOL);
+    $duration = round((microtime(true) - $startTime) * 1000);
+    echo("Durée totale : $duration ms" . PHP_EOL);
     echo("--------------------------------------------------" . PHP_EOL);
 }
